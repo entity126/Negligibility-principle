@@ -8,3 +8,4 @@ We welcome feedback! To contribute:
 - **Discussion**: Join the[ [Discussions]](https://github.com/entity126/Negligibility-principle/issues)
 
 **Note**: This is not formal peer review but helps improve the manuscript.
+**ALSO NOTE**: All conributers will be mentioned on the credits
