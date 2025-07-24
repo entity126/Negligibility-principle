@@ -19,47 +19,57 @@ class equations():
    
 class negligibility():
 
-    def __init__(self, a, r, n, t):
+    def __init__(self, a, r, t):
         self.a = a
         self.r = r
-        self.n = n
         self.t = t
 
-        self.numerator = t * (1 - r)
-        self.denominator = a
-        self.argument = self.numerator / self.denominator
-        self.floored_argument = math.floor(self.argument)
+        
+        self.argument = t * (1 - r) / a
 
     def calculate_negligibility(self):
-        self.n = math.log(self.floored_argument) / math.log(r)
+        if self.argument <= 0 or self.r <= 0 or self.r == 1:
+            print("Error: Invalid argument for logarithm or common ratio. Check your inputs.")
+            exit()
+        self.n = math.log(self.argument) / math.log(self.r)
         return self.n
     
 
-x = equations()
-a = float(input("Enter the first term (a): "))
+equation = equations()
+
+a = input("Enter the first term (a): ")
 r_input = input("Enter the common ratio (r), e.g., 0.5 or 1/2: ")
 
-
 try:
+    a = float(a)
     r = float(Fraction(r_input))
 except ValueError:
-    print("Invalid input for r.")
+    print("Invalid input for a or r.")
     exit()
-n = int(input("Enter the number of terms (n): "))
-t_percent = float(input("Enter the tolerance (t) in % : "))
+t_percent = input("Enter the tolerance (t) in % : ")
+try:
+    t_percent = float(t_percent)
+except ValueError:
+    print("Invalid input for tolerance.")
+    exit()
 
 if r < 1 and r > -1:
-    sum_n = x.sum(a, r, n)
-    sum_inf = x.sum_infinite(a, r)
+    
+    sum_inf = equation.sum_infinite(a, r)
     t = t_percent / 100 * sum_inf
+    tol =math.floor(negligibility(a, r, t).calculate_negligibility()) 
+    print(tol)
+
+    sum_n = equation.sum(a, r, tol)
+    print(f"The sum to infinity is: {sum_inf}")
+    print(f"The sum of the first {tol} terms is: {sum_n}")
+    print(f"The number of terms needed to achieve the specified tolerance is: {tol}")
 
     
-    
-    
-    
-    
+
+
 else:
     print("The common ratio must be between -1 and 1 (exclusive) for the infinite sum to converge.")
     exit()
 
-#code to be finished 
+#code to be optimized
