@@ -1,5 +1,6 @@
 import numpy as np
 import math 
+import matplotlib.pyplot as plt  
 from fractions import Fraction
 
 class equations():
@@ -37,8 +38,8 @@ class negligibility():
 
 equation = equations()
 
-a = input("Enter the first term (a): ")
-r_input = input("Enter the common ratio (r), e.g., 0.5 or 1/2: ")
+a = 5
+r_input = 0.1
 
 try:
     a = float(a)
@@ -46,7 +47,7 @@ try:
 except ValueError:
     print("Invalid input for a or r.")
     exit()
-t_percent = input("Enter the tolerance (t) in % : ")
+t_percent = 0.001
 try:
     t_percent = float(t_percent)
 except ValueError:
@@ -54,17 +55,33 @@ except ValueError:
     exit()
 
 if r < 1 and r > -1:
-    
+    # Terms of the first 50 terms
+    first_50_terms = a * np.power(r, np.arange(50))
+    print(f"First 50 terms: {first_50_terms}")
+
     sum_inf = equation.sum_infinite(a, r)
     t = t_percent / 100 * sum_inf
-    tol =math.floor(negligibility(a, r, t).calculate_negligibility()) 
+    tol = math.floor(negligibility(a, r, t).calculate_negligibility())
     print(tol)
+
+    # Store terms in a numpy array
+    terms_array = a * np.power(r, np.arange(tol))
+    # Or, as a Python list:
+    terms_list = [a * r**k for k in range(tol)]
 
     sum_n = equation.sum(a, r, tol)
     print(f"The sum to infinity is: {sum_inf}")
     print(f"The sum of the first {tol} terms is: {sum_n}")
     print(f"The number of terms needed to achieve the specified tolerance is: {tol}")
+    print(f"Terms as numpy array: {terms_array}")
+    print(f"Terms as list: {terms_list}")
 
+    # Plotting the terms
+    plt.plot(first_50_terms, marker='o', linestyle='-', color='r')
+    plt.plot(terms_array, marker='o', linestyle='-', color='b')
+    plt.title('Terms of the Geometric Series')
+    plt.xlabel('Term Index')
+    plt.show()
     
 
 
